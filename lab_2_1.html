@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="lab.css">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.2/full/pyodide.js"></script>
+  </head>
+
+  <body>
+    <h1>Unit 1 - Lab 2</h1>
+    <div id="section-intro">
+      <h2>Section 1: Variable Review</h2>
+    </div>
+    <div id="slide-code-grid">
+      <div id="slide">
+        <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQQpZvLQiJYBKCt_Q16Hqn-sfflsHNCfoR2qjl15577PPGTPLDRLtvB5xzl3R7Cwr3r4OZd3S7_epaC/embed?start=false&loop=false&delayms=3000&rm=minimal" frameborder="0" width="100%" height="100%" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+      </div>
+      <div id="python">
+        <div><h3>Program</h3></div>
+        <div id="editor">
+          <div class="line-numbers">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <textarea style="width: 98%;" rows="10" id="code">
+color = f"red"
+description = f"massive"
+body_part = f"head"
+thing = f"car"
+
+print(f"The {color} dragon is the strangest dragon of all.")
+print(f"It has a {description} {body_part} shaped like a {thing}.")
+print(f"It loves to eat {thing}s, although it will feast on nearly anything.")
+print(f"It is {description} and {description}. You must be {description} around it, or you may end up as it's meal!")
+</textarea>
+          <script>
+            const textarea = document.getElementById("code")
+            const lineNumbers = document.querySelector('.line-numbers')
+
+            textarea.addEventListener('keyup', event => {
+              const numberOfLines = event.target.value.split('\n').length
+
+              lineNumbers.innerHTML = Array(numberOfLines)
+                .fill('<span></span>')
+                .join('')
+            })
+            textarea.addEventListener('keydown', event => {
+              if (event.key === 'Tab') {
+                const start = textarea.selectionStart
+                const end = textarea.selectionEnd
+
+                textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end)
+
+                event.preventDefault()
+              }
+            })
+          </script>
+        </div>
+        <br />
+        <button id="run-button" onclick="evaluatePython()">Run</button>
+        <br />
+        <br />
+        <div><h3>Output:</h3></div>
+        <textarea id="output" style="width: 98%;" rows="10" disabled></textarea>
+
+        <script>
+          const output = document.getElementById("output");
+          const code = document.getElementById("code");
+
+          function addToOutput(s) {
+            output.value = s + "\n";
+          }
+
+          output.value = "Initializing...\n";
+          // init Pyodide
+          async function main() {
+            let pyodide = await loadPyodide();
+            pyodide.runPython(`
+import sys
+import io
+`);
+            output.value += "Ready!\n";
+            return pyodide;
+          }
+          let pyodideReadyPromise = main();
+
+          async function evaluatePython() {
+            let pyodide = await pyodideReadyPromise;
+            try {
+              pyodide.runPython("sys.stdout = io.StringIO()")
+              pyodide.runPython(code.value);
+              var output = pyodide.runPython("sys.stdout.getvalue()")
+              //clear stdout
+              pyodide.runPython("sys.stdout.close()")
+              addToOutput(output);
+            } catch (err) {
+              addToOutput(err);
+            }
+          }
+        </script>
+      </div>
+      <div id="prev">
+      </div>
+      <div id="next">
+        <a class="nav-button" href="lab_2_2.html"><button>Next Section &#9193;</button></a>
+      </div>
+    </div>
+  </body>
+</html>

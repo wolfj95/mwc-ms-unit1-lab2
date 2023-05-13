@@ -1,0 +1,77 @@
+body {
+    padding: 40px;
+}
+
+#slide-code-grid {
+    display:grid;
+    column-gap: 1em;
+    grid-template-columns:1fr 1fr;
+}
+
+#slide {
+    min-height: 500px;
+}
+
+#python h3 {
+    margin-top: 0px;
+    margin-bottom: 0.5em;
+}
+
+#editor {
+  display: inline-flex;
+  gap: 10px;
+  font-family: monospace;
+  line-height: 21px;
+  background: #282a3a;
+  border-radius: 2px;
+  padding: 20px 10px;
+  width:96%;
+}
+
+#code {
+  line-height: 21px;
+  overflow-y: hidden;
+  padding: 0;
+  border: 0;
+  background: #282a3a;
+  color: #FFF;
+  min-width: 500px;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+}
+
+.line-numbers {
+  width: 20px;
+  text-align: right;
+}
+
+.line-numbers span {
+  counter-increment: linenumber;
+}
+
+.line-numbers span::before {
+  content: counter(linenumber);
+  display: block;
+  color: #506882;
+}
+
+#run-button {
+    margin: 5px 0px;
+}
+
+#prev {
+    display: flex;
+    justify-content:flex-start;
+}
+
+#next {
+    display: flex;
+    justify-content:flex-end;
+}
+
+.nav-button {
+    padding: 10px 0px;
+}
